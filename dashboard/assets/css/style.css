@@ -1,0 +1,79 @@
+/* Autozentrum Kiener – custom styles (mobile-first).  */
+:root{
+  --brand:#ed804d;
+  --brand-600:#e06f38;
+  --ring:0 0 0 3px rgba(237,128,77,.35);
+}
+html{scroll-behavior:smooth}
+body{word-break:break-word}
+.skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+.skip-link:focus{position:static;width:auto;height:auto;background:#111;color:#fff;padding:.5rem;border-radius:.5rem}
+
+/* Buttons */
+.btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--brand);color:#fff;padding:.6rem .9rem;border-radius:.8rem;font-weight:600;border:1px solid transparent;box-shadow:0 1px 0 rgba(0,0,0,.04)}
+.btn-primary:hover{background:var(--brand-600)}
+.btn-outline{display:inline-flex;align-items:center;gap:.5rem;background:#fff;color:#111;padding:.55rem .9rem;border-radius:.8rem;font-weight:600;border:1px solid #e5e7eb}
+.btn-outline:hover{border-color:#cbd5e1}
+.btn-icon{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:.8rem;border:1px solid #e5e7eb}
+
+/* Inputs */
+.input{width:100%;border:1px solid #e5e7eb;border-radius:.8rem;padding:.6rem .8rem}
+.input:focus{outline:none;box-shadow:var(--ring);border-color:#f3a886}
+.label{display:block;font-size:.875rem;color:#374151;margin-bottom:.25rem}
+.helper{font-size:.75rem;color:#ef4444;margin-top:.25rem;min-height:1em}
+
+/* Nav */
+.nav-link{position:relative;padding:.25rem .25rem}
+.nav-link span{position:absolute;left:0;bottom:-.2rem;width:0;height:2px;background:var(--brand);transition:width .25s ease}
+.nav-link:hover span{width:100%}
+
+/* Cards */
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:1rem;padding:1rem}
+.service-card{transition:transform .2s ease, box-shadow .2s ease}
+.service-card:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.05)}
+.thumb img{display:block;width:100%;height:auto;object-fit:cover}
+
+/* Vehicle grid cards */
+.vehicle-card{display:flex;flex-direction:column;border:1px solid #e5e7eb;border-radius:1rem;overflow:hidden;background:#fff}
+.vehicle-media{aspect-ratio:4/3;background:#f3f4f6;overflow:hidden}
+.vehicle-media img{width:100%;height:100%;object-fit:cover;display:block}
+.vehicle-body{padding:.9rem}
+.vehicle-title{font-weight:600;line-height:1.3}
+.vehicle-meta{display:flex;flex-wrap:wrap;gap:.5rem;color:#475569;font-size:.85rem;margin:.5rem 0}
+.vehicle-footer{display:flex;align-items:center;justify-content:space-between;padding:.8rem .9rem;border-top:1px solid #eef2f7}
+.price-chip{font-weight:700}
+.more-btn{border:1px solid #e5e7eb;border-radius:.7rem;padding:.4rem .7rem}
+
+/* Back to top */
+.back-to-top{position:fixed;right:1rem;bottom:1rem;width:42px;height:42px;border-radius:9999px;border:1px solid #e5e7eb;background:#fff;display:none;align-items:center;justify-content:center;font-weight:700}
+.back-to-top.show{display:flex}
+
+/* Cookie banner */
+.cookie-banner{position:fixed;left:0;right:0;bottom:0;background:#111;color:#fff;padding:.9rem;display:none}
+.cookie-banner .container{max-width:72rem;margin:0 auto;display:flex;gap:1rem;align-items:center;justify-content:space-between}
+.cookie-banner .actions{display:flex;gap:.5rem}
+
+/* Mobile menu panel (animated) */
+.menu-panel{max-height:0;overflow:hidden;transition:max-height .25s ease}
+.menu-panel.open{max-height:420px}
+
+/* Reveal animations */
+.reveal{opacity:0;transform:translateY(10px);transition:opacity .5s ease, transform .6s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+/* Small tweaks */
+@media (max-width:640px){
+  header .mx-auto{padding-left:1rem;padding-right:1rem}
+  .vehicle-title{font-size:1rem}
+}
+
+/* Dark mode fixes */
+@media (prefers-color-scheme: dark){
+  .btn-outline{background:#0b0b0b;color:#eee;border-color:#2a2a2a}
+  .card,.vehicle-card{background:#0b0b0b;border-color:#222}
+  .input{background:#0b0b0b;border-color:#222;color:#eee}
+  .menu-panel{background:#0b0b0b}
+  .back-to-top{background:#0b0b0b;border-color:#222;color:#eee}
+}
+/* Force black label in hero in dark mode (requested) */
+.dark .text-black{color:#000!important}
