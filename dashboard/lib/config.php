@@ -1,19 +1,14 @@
 <?php
-// lib/config.php — reads environment variables for mobile.de and runtime
 declare(strict_types=1);
 
+// lib/config.php — environment configuration
 function env_str(string $key, ?string $default=null): string {
   $v = getenv($key);
   if($v===false || $v==='') return $default ?? '';
   return $v;
 }
-
-function is_vercel(): bool {
-  return (bool) getenv('VERCEL');
-}
-
+function is_vercel(): bool { return (bool) getenv('VERCEL'); }
 function cache_path(string $file): string {
-  // Prefer /tmp in serverless, fallback to repo storage (read-only on Vercel).
   $tmp = sys_get_temp_dir();
   if(is_writable($tmp)) return rtrim($tmp, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file;
   $storage = __DIR__ . '/../storage';
