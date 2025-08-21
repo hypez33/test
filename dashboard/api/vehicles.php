@@ -12,11 +12,19 @@ $size = min(60, max(1, (int)($_GET['size'] ?? 12)));
 $q = trim((string)($_GET['q'] ?? ''));
 $fuel = trim((string)($_GET['fuel'] ?? ''));
 $sort = (string)($_GET['sort'] ?? 'price-asc');
+$debug = isset($_GET['debug']);
 
 $qs = [
   'page.size' => (string)$size,
   'page.number' => (string)$page,
+  // Ensure at least one non-numeric/boolean search parameter
+  'country' => 'DE',
 ];
+
+// Prefer restricting to cars if nothing else is specified (improves relevancy & helps API rules)
+if (!isset($_GET['classification'])) {
+  $qs['classification'] = 'refdata/classes/Car';
+}
 
 // Filter by seller
 if(MOBILE_DE_CUSTOMER_ID !== ''){
@@ -33,10 +41,11 @@ switch($sort){
   case 'km-desc':    $qs['sort.field']='MILEAGE'; $qs['sort.order']='DESCENDING'; break;
   case 'year-asc':   $qs['sort.field']='FIRST_REGISTRATION'; $qs['sort.order']='ASCENDING'; break;
   case 'year-desc':  $qs['sort.field']='FIRST_REGISTRATION'; $qs['sort.order']='DESCENDING'; break;
+  default:           $qs['sort.field']='PRICE'; $qs['sort.order']='ASCENDING'; break;
 }
 
 if($q !== ''){
-  $qs['modelDescription.contains'] = $q;
+  $qs['modelDescription'] = $q;
 }
 if($fuel !== ''){
   $map = ['Benzin'=>'PETROL','Diesel'=>'DIESEL','Hybrid'=>'HYBRID','Elektrisch'=>'ELECTRIC'];
@@ -47,7 +56,13 @@ $query = http_build_query($qs);
 $url = "https://services.mobile.de/search-api/search?".$query;
 
 list($status, $body) = http_get($url);
-if($status !== 200) error_out("Upstream mobile.de Fehler ($status)", 502);
+if($status !== 200){
+  if($debug){
+    error_out("Upstream mobile.de Fehler ($status): ".$body, 502);
+  } else {
+    error_out("Upstream mobile.de Fehler ($status)", 502);
+  }
+}
 
 $payload = json_decode($body, true);
 if(!is_array($payload)) error_out("Antwort von mobile.de ist kein JSON.", 502);
